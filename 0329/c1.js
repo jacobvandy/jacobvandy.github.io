@@ -1,42 +1,46 @@
 "use strict";
 let R = null;
+let chart2 = null;
 
-let b1 = document.querySelector("#b1");
+let b2 = document.querySelector("#b2");
 
-let chart1 = null;//for chart to be shown in c1 cnavas
-async function loadd()
+ async function showc()
 {
-    //fetch();
-    
+    ///fetch()
+   let url = `https://juxinglong.github.io/static/HW/hw6/MIS3033.json`;
+    let r = await  fetch(url);//async
+     let rj = await r.json
 
-    let url = `https://juxinglong.github.io/static/data/states.json`;
+     let c2 = document.querySelector("#c2");
 
-    let r = await fetch(url);
-    let rj = await r.json();
+     let opts =
+     {
+         type: "pie",
+         data:
+         {
+             labels: rj.map(x => x.lg),
+             datasets: [{ data: rj.map(x => x.n), label: "Number" ,},],
+         },
+     };
 
-    let c1 = document.querySelector("#c1");
-    if (chart1 != null)
-    {
-        chart1.destroy();
-    }
-    c1.innerHTML = ``;
+     if (chart2 != null)
+     {
+         chart2.destroy();
+     }
 
-    let opts = {
-        type: "pie",
-        data: {
-            labels: rj.map(x => x.st),
+     c2.innerHTML = ``;
 
-            datasets: [
-                {data:rj.map(x=>x.p),},
-            ],
-        },
-    };
-    chart1 = new Chart(c1, opts);
+     chart2 = new Chart(c2, opts);
 
-    R = rj;
-    console.log(rj);
+     opt =
+     {
+         targets: [c2,],
+         rotate: { value: 60, duration: 3000 },
+     };
+     anime(opts);
 
-    Swal.fire("Load Data")
+     R = rj;
+     console.log(rj);
 }
 
-b1.addEventListener("click",loadd);
+b2.addEventListener("click", showc);
